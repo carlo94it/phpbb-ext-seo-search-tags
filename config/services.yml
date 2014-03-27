@@ -1,3 +1,7 @@
+imports:
+    - { resource: search_engines.yml }
+
+services:
     carlo94it.seosearchtags.listener:
         class: carlo94it\seosearchtags\event\listener
         tags:

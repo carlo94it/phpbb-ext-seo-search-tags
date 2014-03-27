@@ -1,0 +1,6 @@
+parameters:
+    carlo94it.seosearchtags.search_engines:
+        - { host: google.*, query: q }
+        - { host: search.yahoo.com, query: p }
+        - { host: bing.com, query: q }
+        - { host: yauba.com, query: q }

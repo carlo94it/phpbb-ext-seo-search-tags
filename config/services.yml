@@ -1,0 +1,4 @@
+    carlo94it.seosearchtags.listener:
+        class: carlo94it\seosearchtags\event\listener
+        tags:
+            - { name: event.listener }

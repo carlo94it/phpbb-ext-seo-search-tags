@@ -1,0 +1,24 @@
+{
+	"name": "carlo94it/seosearchtags",
+	"type": "phpbb-extension",
+	"description": "Show in each topic, a list of tags that users have searched on search engines to find that particular topic",
+	"homepage": "https://github.com/carlo94it/phpbb-ext-seo-search-tags",
+	"version": "1.0.0-dev",
+	"time": "2014-03-27",
+	"license": "GPL-2.0",
+	"authors": [
+		{
+			"name": "Carlo",
+			"email": "info@phpbbitalia.net",
+			"homepage": "http://www.phpbbitalia.net/",
+			"role": "Lead Developer"
+		}
+	],
+	"require": {
+		"php": ">=5.3.3",
+		"phpbb/phpbb": "3.1.*@dev"
+	},
+	"extra": {
+		"display-name": "SEO Search Tags"
+	}
+}

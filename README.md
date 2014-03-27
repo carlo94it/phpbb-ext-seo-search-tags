@@ -1,6 +1,6 @@
 # SEO Search Tags
 
-SEO Search Tags is an Extension for [phpBB 3.1](https://www.phpbb.com/)
+SEO Search Tags is an Extension for phpBB 3.1.
 
 ## Description
 

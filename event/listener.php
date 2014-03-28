@@ -24,6 +24,12 @@ class listener implements EventSubscriberInterface
 	 * @var \phpbb\request
 	 */
 	protected $request;
+	
+	/**
+	 * Search engines list
+	 * @var array
+	 */
+	protected $search_engines;
 
 	/**
 	 * Table prefix
@@ -59,9 +65,40 @@ class listener implements EventSubscriberInterface
 		
 		$this->db = $this->container->get('dbal.conn');
 		$this->request = $this->container->get('request');
+		$this->search_engines = array();
 		$this->table_prefix = $this->container->getParameter('core.table_prefix');
 		
-		define('SEO_SEARCH_TAGS_TABLE', $table_prefix . 'seo_search_tags');
+		define('SEO_SEARCH_TAGS_TABLE', $this->table_prefix . 'seo_search_tags');
+		
+		foreach($this->container->getParameter('carlo94it.seosearchtags.search_engines') as $key => $value)
+		{
+			foreach($value as $host => $param)
+			{
+				$this->search_engines[$host] = $param;
+			}
+		}
+		
+		if ($this->request->is_set('HTTP_REFERER', \phpbb\request\request_interface::SERVER))
+		{
+			$http_ref = $this->request->server('HTTP_REFERER');
+			
+			$http_host = parse_url($http_ref, PHP_URL_HOST);
+			$http_host = str_replace('www.', '', $http_ref);
+			
+			if (isset($this->search_engines[$http_ref]))
+			{
+				$http_query = parse_url($http_ref, PHP_URL_QUERY);
+				
+				parse_str($http_query, $http_query_array);
+				
+				if (isset($http_query_array[$this->search_engines[$http_ref]]))
+				{
+					$http_query = urldecode($http_query_array[$this->search_engines[$http_ref]]);
+					
+					// Todo: add search text to database
+				}
+			}
+		}
 	}
 	
 	/**
@@ -72,6 +109,6 @@ class listener implements EventSubscriberInterface
 	 */
 	public function manage_search_tags($event)
 	{
-		// Todo: write the code for the method
+		// Todo: get and show search tags
 	}
 }

@@ -1,9 +1,9 @@
 parameters:
     carlo94it.seosearchtags.search_engines:
-        - { host: google.com, query: q }
-        - { host: google.it, query: q }
-        - { host: search.yahoo.com, query: p }
-        - { host: it.search.yahoo.com, query: p }
-        - { host: bing.com, query: q }
-        - { host: yauba.com, query: q }
-        - { host: it.yauba.com, query: q }
+        - google.com: q
+        - google.it: q
+        - search.yahoo.com: p
+        - it.search.yahoo.com: p
+        - bing.com: q
+        - yauba.com: q
+        - it.yauba.com: q

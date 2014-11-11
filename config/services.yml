@@ -1,8 +1,13 @@
 imports:
     - { resource: search_engines.yml }
+    - { resource: tables.yml }
 
 services:
     carlo94it.seosearchtags.listener:
         class: carlo94it\seosearchtags\event\listener
+        arguments:
+            - @dbal.conn
+            - @request
+            - @template
         tags:
             - { name: event.listener }

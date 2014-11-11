@@ -15,13 +15,13 @@ class listener implements EventSubscriberInterface
 {
 	/**
 	 * Database object
-	 * @var \phpbb\db\driver
+	 * @var \phpbb\db\driver\driver
 	 */
 	protected $db;
 
 	/**
 	 * Request object
-	 * @var \phpbb\request
+	 * @var \phpbb\request\request
 	 */
 	protected $request;
 	
@@ -32,10 +32,32 @@ class listener implements EventSubscriberInterface
 	protected $search_engines;
 
 	/**
-	 * Table prefix
+	 * Table name
 	 * @var string
 	 */
-	protected $table_prefix;
+	protected $table;
+	
+	/**
+	 * Request object
+	 * @var \phpbb\template\template
+	 */
+	protected $template;
+	
+	/**
+	 * Constructor
+	 *
+	 * @param \phpbb\db\driver\driver     $db             Database object
+	 * @param \phpbb\request\request      $request        Request object
+	 * @param \phpbb\template\template    $template       Template object
+	 * @return \carlo94it\seosearchtags\event\listener
+	 * @access public
+	 */
+	public function __construct(\phpbb\db\driver\driver $db, \phpbb\request\request $request, \phpbb\template\template $template)
+	{
+		$this->db = $db;
+		$this->request = $request;
+		$this->template = $template;
+	}
 	
 	/**
 	 * Get subscribed events
@@ -63,12 +85,8 @@ class listener implements EventSubscriberInterface
 		
 		$this->container = $phpbb_container;
 		
-		$this->db = $this->container->get('dbal.conn');
-		$this->request = $this->container->get('request');
+		$this->table = $this->container->getParameter('carlo94it.seosearchtags.tables.tags');
 		$this->search_engines = array();
-		$this->table_prefix = $this->container->getParameter('core.table_prefix');
-		
-		define('SEO_SEARCH_TAGS_TABLE', $this->table_prefix . 'seo_search_tags');
 		
 		foreach($this->container->getParameter('carlo94it.seosearchtags.search_engines') as $key => $value)
 		{
@@ -77,6 +95,19 @@ class listener implements EventSubscriberInterface
 				$this->search_engines[$host] = $param;
 			}
 		}
+	}
+	
+	/**
+	 * Manage search tags
+	 *
+	 * @param Event $event Event object
+	 * @return null
+	 */
+	public function manage_search_tags($event)
+	{
+		$this->template->assign_vars(array(
+			'SEO_SEARCH_TAGS'	=> 'ciaoooooooo',
+		));
 		
 		if ($this->request->is_set('HTTP_REFERER', \phpbb\request\request_interface::SERVER))
 		{
@@ -95,20 +126,19 @@ class listener implements EventSubscriberInterface
 				{
 					$http_query = urldecode($http_query_array[$this->search_engines[$http_ref]]);
 					
-					// Todo: add search text to database
+					$sql = "SELECT COUNT(*) as tags
+						FROM " . SEO_SEARCH_TAGS_TABLE . "
+						WHERE topic_id = 1 AND tags = '" . $db->sql_escape($http_query) . "'";
+					
+					$result = $db->sql_query($sql);
+					$tags = (int) $db->sql_fetchfield('tags');
+					
+					if ($tags)
+					{
+						//$db->sql_query("UPDATE " . SEO_SEARCH_TAGS_TABLE . " SET view = view + 1 WHERE topic_id = {$topic_id} AND string = '{$db->sql_escape($search_terms)}'");
+					}
 				}
 			}
 		}
-	}
-	
-	/**
-	 * Manage search tags
-	 *
-	 * @param Event $event Event object
-	 * @return null
-	 */
-	public function manage_search_tags($event)
-	{
-		// Todo: get and show search tags
 	}
 }

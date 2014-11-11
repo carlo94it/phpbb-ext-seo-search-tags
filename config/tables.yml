@@ -1,0 +1,2 @@
+parameters:
+    carlo94it.seosearchtags.tables.tags: %core.table_prefix%seo_search_tags
